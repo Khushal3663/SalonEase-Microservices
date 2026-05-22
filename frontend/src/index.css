@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  /* Adding your custom Salon colors */
+  --color-primary: #019031;
+  --color-secondary: #eaf0f1;
+}
+
+:root {
+  --color-chart-1: #9155fd; /* Your primary purple */
+  --color-chart-2: #03c3ec; /* A nice secondary blue */
+  --color-text-3: #9ca3af;
+  --color-border-3: #f0f0f0;
+  --color-border-2: #e5e7eb;
+  --color-surface-raised: #ffffff;
+  --color-surface-base: #ffffff;
+}

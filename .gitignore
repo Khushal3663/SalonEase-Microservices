@@ -1,0 +1,20 @@
+# --- IDE & OS Specific ---
+**/.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# --- Root Environment Secrets ---
+.env
+.env.local
+
+# --- Build Artifacts (Target folders for ALL services) ---
+**/target/
+**/build/
+*.jar
+*.war
+
+# --- Frontend Environment Assets ---
+**/node_modules/
+**/.env
+**/.env.local

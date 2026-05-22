@@ -1,0 +1,45 @@
+server:
+  port: 5006
+
+spring:
+  application:
+    name: payment-service
+
+
+  # MySQL database configurations
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/paymentdb_saloon?createDatabaseIfNotExist=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+  main:
+    allow-bean-definition-overriding: true
+
+razorpay:
+  api:
+    key: ${RAZORPAY_API_KEY:placeholder_key}
+    secret: ${RAZORPAY_API_SECRET:placeholder_secret}
+
+stripe:
+  api:
+    key: ${STRIPE_API_KEY:placeholder_stripe_key}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8070/eureka/}

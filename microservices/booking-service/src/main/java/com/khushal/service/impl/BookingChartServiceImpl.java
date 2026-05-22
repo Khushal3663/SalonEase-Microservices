@@ -1,0 +1,52 @@
+package com.khushal.service.impl;
+
+import com.khushal.domain.BookingStatus;
+import com.khushal.model.Booking;
+import com.khushal.service.BookingChartService;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Service
+public class BookingChartServiceImpl implements BookingChartService {
+
+    public List<Map<String, Object>> generateEarningsChartData(List<Booking> bookings) {
+//        Group bookings by day and calculate total earnings for each day
+        Map<String, Integer> earningsByDay = bookings.stream()
+                .collect(Collectors.groupingBy(
+                        booking -> booking.getStartTime().toLocalDate().toString(),
+                        Collectors.summingInt(Booking::getTotalPrice)
+                ));
+
+        return convertToChartData(earningsByDay, "daily", "earnings");
+
+    }
+
+    public List<Map<String, Object>> generateBookingCountChartData(List<Booking> bookings) {
+//        Filter only confirmed bookings and group by day to count bookings
+        Map<String, Long> countsByDay = bookings.stream()
+                .filter(booking -> booking.getStatus() == BookingStatus.CONFIRMED)
+                .collect(Collectors.groupingBy(
+                        booking -> booking.getStartTime().toLocalDate().toString(),
+                        Collectors.counting()
+                ));
+
+        return convertToChartData(countsByDay, "daily", "bookings");
+    }
+
+    private <T> List<Map<String, Object>> convertToChartData(Map<String, T> groupedData, String period, String dataKey){
+        List<Map<String, Object>> chartData = new ArrayList<>();
+
+//        convert each entry in map to a data point
+        groupedData.forEach((date, value) -> {
+            Map<String, Object> dataPoint = new HashMap<>();
+            dataPoint.put(period, date);
+            dataPoint.put(dataKey, value);
+            chartData.add(dataPoint);
+        });
+
+        chartData.sort(Comparator.comparing(dp->dp.get(period).toString()));
+        return chartData;
+    }
+}
