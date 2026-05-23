@@ -30,7 +30,82 @@ The entire ecosystem is orchestrated to boot seamlessly out of the box with zero
 
 ### Spin Up the Application
 
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/YOUR_GITHUB_USERNAME/SalonEase-Microservices.git](https://github.com/YOUR_GITHUB_USERNAME/SalonEase-Microservices.git)
+Follow these steps to initialize and boot the entire ecosystem on your local machine:
+
+#### 1. Clone the Repository
+
+```bash
+   git clone https://github.com/Khushal3663/SalonEase-Microservices.git
    cd SalonEase-Microservices
+```
+
+#### 2. Configure Environment Variables
+
+Because sensitive database credentials and payment secret keys are hidden by our .gitignore, you need to set up a local environmental profile.
+
+Create a file named .env at the root directory of the cloned project and populate it with your configuration variables:
+
+```env
+# --- Database Setup (MySQL 8.0 Engine) ---
+DB_USERNAME=root
+DB_PASSWORD=your_mysql_password
+DB_ROOT_PASSWORD=your_mysql_root_password
+
+# --- Asynchronous Messaging Broker (RabbitMQ 4.2 Instance) ---
+# Note: Host must point to the 'rabbitmq' container domain inside the bridge mesh
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_USERNAME=your_rabbitmq_username
+RABBITMQ_USER=your_rabbitmq_username
+RABBITMQ_PASSWORD=your_rabbitmq_password
+
+# --- Identity Provider & Security Context (Keycloak 24.0) ---
+# Note: Issuer URL must point to the internal container path 'keycloak' for backchannel validation
+KEYCLOAK_ISSUER_URL=http://keycloak:8080/realms/your_realm_name
+KEYCLOAK_ADMIN_USER=your_keycloak_admin_user
+KEYCLOAK_ADMIN_PASSWORD=your_keycloak_admin_password
+
+# --- Service Discovery Engine (Spring Cloud Eureka Server) ---
+EUREKA_URL=http://eurekaserver:8070/eureka/
+EUREKA_HOSTNAME=eurekaserver
+
+# --- Third-Party Payment Gateway Integrations ---
+# Razorpay Credentials
+RAZORPAY_API_KEY=your_razorpay_test_key
+RAZORPAY_API_SECRET=your_razorpay_test_secret
+
+# Stripe Credentials
+STRIPE_API_KEY=your_stripe_test_key
+
+# --- Full-Stack Frontend System Mappings (Docker Production Layout) ---
+# VITE_API_BASE_URL points to your unified API gateway router port
+VITE_API_BASE_URL=http://localhost:5000
+
+# PAYMENT_FRONTEND_URL points to the compiled React app serving on port 3000 inside Docker
+PAYMENT_FRONTEND_URL=http://localhost:3000
+```
+
+#### 3. Orchestrate the Container Stack
+   Since the docker-compose.yml and your newly created .env file reside in the same root folder, Docker Compose will implicitly ingest your environment keys automatically. Run the following command to boot the multi-container grid concurrently:
+
+```bash
+docker compose up -d
+```
+
+#### 4. Verify System Health
+   Give the system roughly 30–45 seconds to initialize the database engines, apply schemas, register with Eureka, and start up the containers. You can monitor the system boot logs using:
+
+```bash
+docker compose logs -f
+```
+
+Once all services display a successful startup log entry, you can access the operational layout components directly from your browser:
+
+| Application Component | Host Address | Access Scope |
+| :--- | :--- | :--- |
+| **React Dashboard (UI)** | `http://localhost:3000` | End-User Web App Portal |
+| **API Gateway Routing Service** | `http://localhost:5000` | Central Microservices Router |
+| **Eureka Service Registry Dashboard** | `http://localhost:8070` | Node Topology & Heartbeat Monitoring |
+| **RabbitMQ Management Dashboard** | `http://localhost:15672` | Asynchronous Event Log & Queue Analytics |
+
+---
