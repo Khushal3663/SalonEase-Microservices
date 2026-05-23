@@ -35,6 +35,10 @@ stripe:
   api:
     key: ${STRIPE_API_KEY:placeholder_stripe_key}
 
+payment:
+  frontend:
+    url: ${PAYMENT_FRONTEND_URL}
+
 eureka:
   instance:
     prefer-ip-address: true

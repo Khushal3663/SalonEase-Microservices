@@ -40,6 +40,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${razorpay.api.secret}")
     private String razorpayApiSecret;
 
+    @Value("${payment.frontend.url:http://localhost:5173}")
+    private String frontendUrl;
+
     @Override
     public PaymentLinkResponse createOrder(UserDTO user, BookingDTO booking, PaymentMethod paymentMethod) throws RazorpayException, StripeException {
         Long amount = (long)booking.getTotalPrice();
@@ -109,7 +112,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         paymentLinkRequest.put("notify", notify);
         paymentLinkRequest.put("reminder_enable", true);
-        paymentLinkRequest.put("callback_url", "http://localhost:5173/payment-success/"+orderId);
+        paymentLinkRequest.put("callback_url", frontendUrl + "/payment-success/" + orderId);
         paymentLinkRequest.put("callback_method", "get");
 
         return razorpayClient.paymentLink.create(paymentLinkRequest);
@@ -122,8 +125,8 @@ public class PaymentServiceImpl implements PaymentService {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:3000/payment-success/"+orderId)
-                .setCancelUrl("http://localhost:3000/payment-cancel/")
+                .setSuccessUrl(frontendUrl + "/payment-success/" + orderId)
+                .setCancelUrl(frontendUrl + "/payment-cancel/")
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
