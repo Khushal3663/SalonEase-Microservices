@@ -22,12 +22,12 @@ Here is a glimpse of the SalonEase customer ecosystem. The platform delivers an 
     <td width="50%" align="center">
       <strong>✨ Modern Storefront Hero Section</strong>
       <br />
-      <img src=".github/images/home-page-1.jpg" alt="SalonEase Home Hero" width="100%"/>
+      <img src=".github/images/home-page-1.png" alt="SalonEase Home Hero" width="100%"/>
     </td>
     <td width="50%" align="center">
       <strong>💇‍♂️ Service Discovery & Categorization</strong>
       <br />
-      <img src=".github/images/home-page-2.jpg" alt="Service Catalog" width="100%"/>
+      <img src=".github/images/home-page-2.png" alt="Service Catalog" width="100%"/>
     </td>
   </tr>
   <tr>
