@@ -238,7 +238,7 @@ const CreateServiceForm = () => {
               sx={{ py: ".8rem" }}
             >
               {" "}
-              Create Category
+              Create Service
             </Button>
           </Grid>
         </Grid>

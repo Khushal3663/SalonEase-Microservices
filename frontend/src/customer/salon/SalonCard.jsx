@@ -29,7 +29,7 @@ const SalonCard = ({ salon }) => {
           <div className="text-white tex-sm p-1 bg-green-700 rounded-full w-14 flex items-center justify-center gap-1">
             4.5 <StarIcon sx={{ fontSize: "16px" }} />
           </div>
-          <p>Professional salon and haircut...</p>
+          {/* <p>Professional salon and haircut...</p> */}
           <p>{salon.address}</p>
         </div>
       </div>

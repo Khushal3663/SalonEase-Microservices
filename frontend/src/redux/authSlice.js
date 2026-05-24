@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../config/api";
 
-const API_BASE_URL = "/auth"; // Update with your Auth service port
+const API_BASE_URL = "/auth";
 
 // 1. LOGIN THUNK
 export const login = createAsyncThunk(
@@ -81,6 +81,8 @@ export const getUserProfile = createAsyncThunk(
   },
 );
 
+const hasToken = !!localStorage.getItem("jwt");
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -89,11 +91,16 @@ const authSlice = createSlice({
     role: null,
     loading: false,
     error: null,
+    // If there is no token in storage, initialization is done immediately.
+    // If a token exists, we stay uninitialized until the profile thunk finishes fetching.
+    isInitialized: !hasToken,
   },
   reducers: {
     logout: (state) => {
       state.jwt = null;
       state.user = null;
+      state.role = null;
+      state.isInitialized = true;
       localStorage.removeItem("jwt");
       localStorage.removeItem("refreshToken");
     },
@@ -109,11 +116,17 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         state.role = action.payload?.role || null;
+        state.isInitialized = true; // Profile loaded successfully!
         state.error = null;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.loading = false;
+        state.jwt = null;
+        state.user = null;
+        state.role = null;
+        state.isInitialized = true; // Profile attempt finished (even though failed/expired)
         state.error = action.payload || "Profile fetch failed";
+        localStorage.removeItem("jwt");
       })
 
       // 2. Login Handlers
@@ -126,6 +139,7 @@ const authSlice = createSlice({
         if (action.payload?.jwt) state.jwt = action.payload.jwt;
         if (action.payload?.role) state.role = action.payload.role;
         if (action.payload?.user) state.user = action.payload.user;
+        state.isInitialized = true;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
@@ -141,6 +155,7 @@ const authSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         if (action.payload?.jwt) state.jwt = action.payload.jwt;
+        state.isInitialized = true;
         state.error = null;
       })
       .addCase(signup.rejected, (state, action) => {

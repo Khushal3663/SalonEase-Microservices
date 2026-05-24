@@ -33,14 +33,14 @@ const Footer = () => {
 
           <div className="flex gap-4 mt-4 text-gray-400">
             <a
-              href="https://github.com/your-username"
+              href="https://github.com/Khushal3663"
               target="_blank"
               className="hover:text-green-500 transition-all"
             >
               <GitHub fontSize="small" />
             </a>
             <a
-              href="https://linkedin.com/in/your-profile"
+              href="https://linkedin.com/in/khushalmagare"
               target="_blank"
               className="hover:text-green-500 transition-all"
             >

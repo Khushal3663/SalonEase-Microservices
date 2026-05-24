@@ -31,6 +31,24 @@ const Payment = () => {
     }
   }, [dispatch, bookings.length]);
 
+  const getStatusStyles = (status) => {
+    const formattedStatus = status?.toUpperCase();
+
+    switch (formattedStatus) {
+      case "CONFIRMED":
+      case "COMPLETED":
+      case "SUCCESS":
+        return "bg-green-100 text-green-700";
+      case "PENDING":
+        return "bg-amber-100 text-amber-700";
+      case "CANCELLED":
+      case "FAILED":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
   if (bookingLoading) {
     return (
       <Box className="flex flex-col items-center justify-center h-64 space-y-10">
@@ -99,7 +117,9 @@ const Payment = () => {
                       ₹{booking.totalPrice}
                     </TableCell>
                     <TableCell align="center">
-                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+                      <span
+                        className={`px-2 py-1 ${getStatusStyles(booking.status)} rounded-full text-xs`}
+                      >
                         {booking.status}
                       </span>
                     </TableCell>

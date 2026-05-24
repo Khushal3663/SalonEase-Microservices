@@ -10,4 +10,10 @@ const getDateTimeFormat = (dateTime) => {
   return format(date, "dd MMM, yyyy h:mm a");
 };
 
-export { getTimeFormat, getDateTimeFormat };
+const getDateFormat = (dateI) => {
+  if (!dateI) return "";
+  const date = parseISO(dateI);
+  return format(date, "dd MMM, yyyy");
+};
+
+export { getTimeFormat, getDateTimeFormat, getDateFormat };

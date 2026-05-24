@@ -110,6 +110,8 @@ public class PaymentServiceImpl implements PaymentService {
         JSONObject notify = new  JSONObject();
         notify.put("email", true);
 
+        System.out.println("frontendUrl: "+ frontendUrl);
+
         paymentLinkRequest.put("notify", notify);
         paymentLinkRequest.put("reminder_enable", true);
         paymentLinkRequest.put("callback_url", frontendUrl + "/payment-success/" + orderId);

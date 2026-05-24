@@ -50,9 +50,13 @@ const SalonServiceDetails = () => {
   const { salon } = useSelector((state) => state.salon);
 
   useEffect(() => {
-    const serviceReqData = { salonId: id, categoryId: selectedCategoryId };
+    const serviceReqData = { salonId: id };
+
+    if (selectedCategoryId !== 0) {
+      serviceReqData.categoryId = selectedCategoryId;
+    }
     dispatch(getServicesBySalon(serviceReqData));
-  }, [jwt, dispatch, selectedCategoryId]);
+  }, [jwt, dispatch, selectedCategoryId, id]);
 
   const handleCategoryClick = (categoryId) => {
     console.log("selected category, ", categoryId);
@@ -202,14 +206,25 @@ const SalonServiceDetails = () => {
           Categories
         </Typography>
         {categories && categories.length > 0 ? (
-          categories.map((category) => (
+          <div className="space-y-3">
             <CategoryCard
-              key={category.id}
               handleCategoryClick={handleCategoryClick}
-              category={category}
               selectedCategoryId={selectedCategoryId}
+              category={{
+                id: 0,
+                name: "All Categories",
+                image: "https://cdn-icons-png.flaticon.com/512/32/32441.png",
+              }}
             />
-          ))
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                handleCategoryClick={handleCategoryClick}
+                selectedCategoryId={selectedCategoryId}
+                category={category}
+              />
+            ))}
+          </div>
         ) : (
           <EmptyCategoryState />
         )}
